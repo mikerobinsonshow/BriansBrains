@@ -75,3 +75,19 @@ body {
 .buttons button:hover {
   background-color: #115293;
 }
+
+@keyframes gentleRotate {
+  0% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+  100% {
+    transform: rotate(-7deg);
+  }
+}
+
+.tod-thinking {
+  animation: gentleRotate 1.2s infinite ease-in-out;
+}
