@@ -110,6 +110,11 @@ export default function App() {
               </span>
             ))}
         </div>
+        <img
+          src={botImages[botState]}
+          alt="AskTod bot"
+          className={`bot-image ${botState === 'thinking' ? 'tod-thinking' : ''}`}
+        />
         <div className="chat-area">
           <div className="messages">
             {messages.map((m, i) => (
