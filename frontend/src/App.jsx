@@ -8,6 +8,24 @@ export default function App() {
   const answerTimer = useRef(null)
   const questionTimer = useRef(null)
   const [questionMarks, setQuestionMarks] = useState([])
+  const [isListening, setIsListening] = useState(false)
+  const recognitionRef = useRef(null)
+
+  useEffect(() => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition()
+      recognitionRef.current.onresult = (event) => {
+        const transcript = Array.from(event.results)
+          .map((r) => r[0].transcript)
+          .join('')
+        setInput((prev) => prev + transcript)
+      }
+      recognitionRef.current.onend = () => setIsListening(false)
+      recognitionRef.current.onerror = () => setIsListening(false)
+    }
+  }, [])
 
   useEffect(() => {
     return () => {
@@ -83,6 +101,17 @@ export default function App() {
     setQuestionMarks([])
   }
 
+  const toggleListening = () => {
+    if (!recognitionRef.current) return
+    if (isListening) {
+      recognitionRef.current.stop()
+      setIsListening(false)
+    } else {
+      recognitionRef.current.start()
+      setIsListening(true)
+    }
+  }
+
   const botImages = {
     idle: '/todidle.jpg',
     thinking: '/todthinking.jpg',
@@ -124,12 +153,21 @@ export default function App() {
             ))}
           </div>
           <div className="input-area">
-            <input
+            <div className="input-row">
+              <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => (e.key === 'Enter' ? send() : null)}
                 placeholder="Type your question here..."
-            />
+              />
+              <button
+                type="button"
+                className={`mic-button ${isListening ? 'listening' : ''}`}
+                onClick={toggleListening}
+              >
+                🎤
+              </button>
+            </div>
             <div className="buttons">
               <button onClick={send}>Send</button>
               <button onClick={clear}>Clear</button>
