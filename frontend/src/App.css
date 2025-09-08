@@ -55,6 +55,33 @@ body {
   flex-direction: column;
 }
 
+.input-row {
+  display: flex;
+  align-items: center;
+}
+
+.input-row input {
+  flex: 1;
+}
+
+.mic-button {
+  margin-left: 0.5rem;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background-color: #1976d2;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mic-button.listening {
+  background-color: #d32f2f;
+}
+
 .input-area input {
   width: 100%;
   padding: 0.5rem;
