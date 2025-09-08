@@ -58,7 +58,7 @@ export default function App() {
 
   return (
     <div className="asktod-container">
-      <h2>AskTod</h2>
+      <img src="/asktod.png" alt="AskTod logo" className="asktod-logo" />
       <div className="chat-layout">
         <img src={botImages[botState]} alt="AskTod bot" className="bot-image"/>
         <div className="chat-area">
