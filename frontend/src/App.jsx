@@ -1,31 +1,66 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './App.css'
 
 export default function App() {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
+  const [botState, setBotState] = useState('idle')
+  const answerTimer = useRef(null)
+
+  useEffect(() => {
+    return () => {
+      if (answerTimer.current) clearTimeout(answerTimer.current)
+    }
+  }, [])
 
   const send = async () => {
     if (!input.trim()) return
     const user = { role: 'user', text: input }
     setMessages((m) => [...m, user])
     setInput('')
-    const res = await fetch('http://localhost:8000/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: user.text }),
-    })
-    const data = await res.json()
-    setMessages((m) => [...m, { role: 'assistant', text: data.text, citations: data.citations }])
+    if (answerTimer.current) {
+      clearTimeout(answerTimer.current)
+      answerTimer.current = null
+    }
+    setBotState('thinking')
+    try {
+      const res = await fetch('http://localhost:8000/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: user.text }),
+      })
+      const data = await res.json()
+      setMessages((m) => [...m, { role: 'assistant', text: data.text, citations: data.citations }])
+      setBotState('answer')
+      answerTimer.current = setTimeout(() => {
+        setBotState('idle')
+        answerTimer.current = null
+      }, 15000)
+    } catch (e) {
+      setBotState('idle')
+    }
   }
 
-  const clear = () => setMessages([])
+  const clear = () => {
+    setMessages([])
+    setBotState('idle')
+    if (answerTimer.current) {
+      clearTimeout(answerTimer.current)
+      answerTimer.current = null
+    }
+  }
+
+  const botImages = {
+    idle: '/todidle.jpg',
+    thinking: '/todthinking.jpg',
+    answer: '/todhastheanswer.jpg',
+  }
 
   return (
     <div className="asktod-container">
       <h2>AskTod</h2>
       <div className="chat-layout">
-        <img src="/todidle.jpg" alt="AskTod bot" className="bot-image"/>
+        <img src={botImages[botState]} alt="AskTod bot" className="bot-image"/>
         <div className="chat-area">
           <div className="messages">
             {messages.map((m, i) => (
