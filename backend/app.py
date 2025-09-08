@@ -15,13 +15,14 @@ app.add_middleware(
 )
 
 client = chromadb.PersistentClient(path="backend/chroma_db")
-col = client.get_or_create_collection("knowledgbase")
+col = client.get_or_create_collection("knowledgebase")
 
 embedder = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
 SYSTEM = (
     "You are a helpful assistant. Use ONLY the context to answer."
     "You are an expert on RPG programming language."
+    "You are an expert on the inner business logic of THE COMPANY."
     " If not present, say you don't know from our docs. Cite as [S1]...[S4]."
 )
 

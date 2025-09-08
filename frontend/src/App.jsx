@@ -25,26 +25,26 @@ export default function App() {
     <div className="asktod-container">
       <h2>AskTod</h2>
       <div className="chat-layout">
-        <img src="https://twemoji.maxcdn.com/v/latest/svg/1f916.svg" alt="AskTod bot" className="bot-image" />
+        <img src="/todidle.jpg" alt="AskTod bot" className="bot-image"/>
         <div className="chat-area">
           <div className="messages">
             {messages.map((m, i) => (
-              <div key={i} className="message">
-                <b>{m.role === 'user' ? 'You' : 'AskTod'}:</b> {m.text}
-                {m.citations && (
-                  <div style={{ fontSize: '0.8em', color: '#666' }}>
-                    {m.citations.join(' | ')}
-                  </div>
-                )}
-              </div>
+                <div key={i} className="message">
+                  <b>{m.role === 'user' ? 'You' : 'AskTod'}:</b> {m.text}
+                  {m.citations && (
+                      <div style={{fontSize: '0.8em', color: '#666'}}>
+                        {m.citations.join(' | ')}
+                      </div>
+                  )}
+                </div>
             ))}
           </div>
           <div className="input-area">
             <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => (e.key === 'Enter' ? send() : null)}
-              placeholder="Type your question here..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => (e.key === 'Enter' ? send() : null)}
+                placeholder="Type your question here..."
             />
             <div className="buttons">
               <button onClick={send}>Send</button>
