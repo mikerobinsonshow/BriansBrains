@@ -16,6 +16,7 @@ app.add_middleware(
 
 client = chromadb.PersistentClient(path="backend/chroma_db")
 col = client.get_or_create_collection("knowledgbase")
+
 embedder = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
 SYSTEM = (

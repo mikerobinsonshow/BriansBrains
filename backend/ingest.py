@@ -26,15 +26,19 @@ def main():
     embs = enc.encode([c.page_content for c in chunks], normalize_embeddings=True)
 
     client = chromadb.PersistentClient(path=DB_DIR)
-    col = client.get_or_create_collection("knowledgebase")
+    col = client.get_or_create_collection("kb")
     metas = []
     for c in chunks:
-        meta = {
-            "source": c.metadata.get("source") or c.metadata.get("file_path") or "",
-        }
+        meta = {}
+        src = c.metadata.get("source") or c.metadata.get("file_path")
+        if src:
+            meta["source"] = str(src)
         page = c.metadata.get("page")
         if page is not None:
-            meta["page"] = int(page)
+            try:
+                meta["page"] = int(page)
+            except (TypeError, ValueError):
+                pass
         metas.append(meta)
 
     col.add(
