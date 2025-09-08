@@ -26,14 +26,21 @@ def main():
     embs = enc.encode([c.page_content for c in chunks], normalize_embeddings=True)
 
     client = chromadb.PersistentClient(path=DB_DIR)
-    col = client.get_or_create_collection("kb")
+    col = client.get_or_create_collection("knowledgebase")
+    metas = []
+    for c in chunks:
+        meta = {
+            "source": c.metadata.get("source") or c.metadata.get("file_path") or "",
+        }
+        page = c.metadata.get("page")
+        if page is not None:
+            meta["page"] = int(page)
+        metas.append(meta)
+
     col.add(
         ids=[f"id-{i}" for i in range(len(chunks))],
         documents=[c.page_content for c in chunks],
-        metadatas=[{
-            "source": (c.metadata.get("source") or c.metadata.get("file_path") or ""),
-            "page": c.metadata.get("page", None)
-        } for c in chunks],
+        metadatas=metas,
         embeddings=embs.tolist(),
     )
     print(f"Indexed {len(chunks)} chunks.")
