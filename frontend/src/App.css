@@ -3,6 +3,10 @@
   font-family: sans-serif;
 }
 
+.asktod-logo {
+  height: 50px;
+}
+
 .chat-layout {
   display: flex;
   align-items: flex-start;
