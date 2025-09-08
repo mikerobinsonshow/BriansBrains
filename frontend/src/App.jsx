@@ -60,7 +60,11 @@ export default function App() {
     <div className="asktod-container">
       <img src="/asktod.png" alt="AskTod logo" className="asktod-logo" />
       <div className="chat-layout">
-        <img src={botImages[botState]} alt="AskTod bot" className="bot-image"/>
+        <img
+          src={botImages[botState]}
+          alt="AskTod bot"
+          className={`bot-image ${botState === 'thinking' ? 'tod-thinking' : ''}`}
+        />
         <div className="chat-area">
           <div className="messages">
             {messages.map((m, i) => (
