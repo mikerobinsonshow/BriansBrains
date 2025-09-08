@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './App.css'
 
 export default function App() {
   const [messages, setMessages] = useState([])
@@ -21,28 +22,37 @@ export default function App() {
   const clear = () => setMessages([])
 
   return (
-    <div style={{ padding: '1rem', fontFamily: 'sans-serif' }}>
-      <h2>Local RAG Chat</h2>
-      <div style={{ minHeight: '200px', border: '1px solid #ccc', padding: '0.5rem' }}>
-        {messages.map((m, i) => (
-          <div key={i} style={{ marginBottom: '0.5rem' }}>
-            <b>{m.role === 'user' ? 'You' : 'Assistant'}:</b> {m.text}
-            {m.citations && (
-              <div style={{ fontSize: '0.8em', color: '#666' }}>
-                {m.citations.join(' | ')}
+    <div className="asktod-container">
+      <h2>AskTod</h2>
+      <div className="chat-layout">
+        <img src="https://twemoji.maxcdn.com/v/latest/svg/1f916.svg" alt="AskTod bot" className="bot-image" />
+        <div className="chat-area">
+          <div className="messages">
+            {messages.map((m, i) => (
+              <div key={i} className="message">
+                <b>{m.role === 'user' ? 'You' : 'AskTod'}:</b> {m.text}
+                {m.citations && (
+                  <div style={{ fontSize: '0.8em', color: '#666' }}>
+                    {m.citations.join(' | ')}
+                  </div>
+                )}
               </div>
-            )}
+            ))}
           </div>
-        ))}
+          <div className="input-area">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => (e.key === 'Enter' ? send() : null)}
+              placeholder="Type your question here..."
+            />
+            <div className="buttons">
+              <button onClick={send}>Send</button>
+              <button onClick={clear}>Clear</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <input
-        style={{ width: '80%', padding: '0.5rem', marginTop: '0.5rem' }}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' ? send() : null}
-      />
-      <button onClick={send} style={{ marginLeft: '0.5rem' }}>Send</button>
-      <button onClick={clear} style={{ marginLeft: '0.5rem' }}>Clear</button>
     </div>
   )
 }
