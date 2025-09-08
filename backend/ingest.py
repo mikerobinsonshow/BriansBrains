@@ -26,7 +26,7 @@ def main():
     embs = enc.encode([c.page_content for c in chunks], normalize_embeddings=True)
 
     client = chromadb.PersistentClient(path=DB_DIR)
-    col = client.get_or_create_collection("kb")
+    col = client.get_or_create_collection("knowledgebase")
     metas = []
     for c in chunks:
         meta = {
