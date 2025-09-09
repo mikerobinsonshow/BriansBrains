@@ -1,5 +1,6 @@
 import re
 import time
+
 from pathlib import Path
 
 # Path to the source file referenced in responses
@@ -23,6 +24,7 @@ def get_response(question: str) -> str:
         if condition(question):
             return response
     return "I'm not sure. Could you ask another question?"
+
 
 
 def think_and_get_response(question: str) -> str:
