@@ -27,10 +27,11 @@ def get_response(question: str) -> str:
 
 
 
-def think_and_get_response(question: str) -> str:
-    """Simulate a short thinking delay before returning the final answer."""
+def think_and_get_response(question: str, delay: float = 0) -> str:
+    """Simulate an optional thinking delay before returning the final answer."""
     print("Hmmm, good question. Let me think about that...")
-    time.sleep(2)
+    if delay > 0:
+        time.sleep(delay)
     return get_response(question)
 
 if __name__ == "__main__":
