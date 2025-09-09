@@ -1,4 +1,6 @@
 import re
+import time
+
 from pathlib import Path
 
 # Path to the source file referenced in responses
@@ -23,7 +25,15 @@ def get_response(question: str) -> str:
             return response
     return "I'm not sure. Could you ask another question?"
 
+
+
+def think_and_get_response(question: str) -> str:
+    """Simulate a short thinking delay before returning the final answer."""
+    print("Hmmm, good question. Let me think about that...")
+    time.sleep(2)
+    return get_response(question)
+
 if __name__ == "__main__":
     import sys
     query = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else input("Question: ")
-    print(get_response(query))
+    print(think_and_get_response(query))
